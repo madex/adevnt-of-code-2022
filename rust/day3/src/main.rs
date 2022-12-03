@@ -16,7 +16,8 @@ fn main() -> io::Result<()> {
     let mut score2: i64 = 0;
     let mut c :Vec<String> = vec![]; 
     for line in reader.lines() {
-        let (a, b) = line.as_ref().unwrap().split_at(line.as_ref().unwrap().len() / 2);
+        let l = line.as_ref().unwrap();
+        let (a, b) = l.split_at(l.len() / 2);
         for x in a.chars() {
             if b.contains(x) {
                 score1 += get_prior(x as i64);
@@ -31,7 +32,7 @@ fn main() -> io::Result<()> {
                     break; 
                 }
             }
-            c = vec![];
+            c.clear();
         }
     }
     println!("{}", score1); // 157
