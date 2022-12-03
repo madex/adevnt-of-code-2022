@@ -21,7 +21,7 @@ with open("input.txt") as fp:
             for x in c[0]:
                 if c[1].find(x) != -1 and c[2].find(x) != -1:
                     prior2 += get_prior(x)
-                    break;
+                    break
             c = []    
 
 print(prior1) # test 157
