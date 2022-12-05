@@ -26,10 +26,10 @@ fn main() {
     }
     // do moves
     for x in st[1].iter() {
-        let m :Vec<i64> = x.split(' ').skip(1).step_by(2).map(|x| x.parse().unwrap()).collect();
+        let m :Vec<usize> = x.split(' ').skip(1).step_by(2).map(|x| x.parse().unwrap()).collect();
         let mut help : Vec<char> = vec![];
-        let from  = m[1] as usize - 1;
-        let to    = m[2] as usize - 1;
+        let from  = m[1] - 1;
+        let to    = m[2] - 1;
         for _ in 0..m[0] {
             let obj   = stack1[from].pop().unwrap();
             stack1[to].push(obj);
