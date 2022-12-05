@@ -6,3 +6,8 @@ rust/day3/target
 rust/day3/Cargo.lock
 rust/day4/target
 rust/day4/Cargo.lock
+rust/day5/target
+rust/day5/Cargo.lock
+rust/day6/target
+rust/day6/Cargo.lock
+
