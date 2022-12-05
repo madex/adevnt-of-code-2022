@@ -2,13 +2,13 @@ use std::fs;
 
 fn main() {
     let contents = fs::read_to_string("input.txt").expect("puzzle input");
-    let st :Vec<Vec<&str>> = contents.split("\n\n")
+    let part :Vec<Vec<&str>> = contents.split("\n\n")
                                      .map(|x| x.split("\n")
-                                               .collect::<Vec<&str>>())
+                                               .collect())
                                      .collect();
     let mut stack1 :Vec<Vec<char>> = vec![];
     let mut stack2 :Vec<Vec<char>> = vec![]; 
-    for l in st[0].iter().rev().skip(1) {
+    for l in part[0].iter().rev().skip(1) {
         let stacks = l.len() / 4 + 1;
         if stack1.len() == 0 {
             for _ in 0..stacks {
@@ -25,7 +25,7 @@ fn main() {
         }
     }
     // do moves
-    for x in st[1].iter() {
+    for x in part[1].iter() {
         let m :Vec<usize> = x.split(' ').skip(1).step_by(2).map(|x| x.parse().unwrap()).collect();
         let mut help : Vec<char> = vec![];
         let from  = m[1] - 1;
