@@ -53,10 +53,10 @@ with open("input.txt") as fp:
                 cur.insert(Dir(l[1], True))
             else:
                 cur.insert(Dir(l[1], False, int(l[0])))
-total = searchSize(root, 100000)
+total = searchSize(root, 100_000)
 print("Part 1 :", sumSmall) # 95437
 dirSizes.sort()
 for d in dirSizes:
-    if 70000000 - total + d >= 30000000:
+    if 70_000_000 - total + d >= 30_000_000:
         print("Part 2 :", d) # 24933642
         break
