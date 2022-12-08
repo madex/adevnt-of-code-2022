@@ -1,45 +1,61 @@
-use std::fs::File;
-use std::io::{self, prelude::*, BufReader};
+use std::fs;
 use std::cell::RefCell;
 use std::rc::{Rc, Weak};
 
-#[derive(PartialEq)]
-struct Dir {
+struct Dir<'a> {
     name:   &'a str,
     dir:    bool,
     size:   usize,
-    parent: Option<Weak<RefCell<Dir>>>,
-    sub:    Vec<Rc<RefCell<Dir>>>
+    parent: Option<Weak<RefCell<Dir<'a>>>>,
+    sub:    Vec<Rc<RefCell<Dir<'a>>>>
 }
 
-impl Dir {
-    pub fn insert(Self: &mut Rc<RefCell<Dir>>, name: & str, dir: bool, size: usize) {
-        Self.sub.push(Dir { name: name, dir: dir, size: size, parent: Some(Rc::downgrade(self)), sub: vec![]});
+fn search_size(dir: &Rc<RefCell<Dir>>, sizes: &mut Vec<i64>) -> i64 {
+    let mut size = 0;
+    for f in dir.borrow().sub.clone() {
+        let dir = f.borrow().dir;
+        if dir {
+            size += search_size(&f, sizes);
+        } else {
+            size += f.borrow().size as i64
+        }
     }
+    sizes.push(size);
+    size
 }
 
-fn main() -> io::Result<()> {
-    let file = File::open("test.txt")?;
-    let reader = BufReader::new(file);
-    let mut root: Dir = Dir { name: "/", dir: true, size: 0, parent: None, sub: vec![] };
-    let mut cur: &Dir = &root;
-    for line in reader.lines() {
-        let l : Vec<&str> = line.as_ref().unwrap().split(' ').collect();
+fn main() {
+    let contents = fs::read_to_string("input.txt").expect("puzzle input");
+    let root: Rc<RefCell<Dir>> = Rc::new(RefCell::new(
+        Dir { name: "/", dir: true, size: 0, parent: None, sub: vec![] }));
+    let mut cur = root.clone();
+    for line in contents.trim().split('\n') {
+        let l : Vec<&str> = line.split(' ').collect();
         if l[0] == "$" {
             if l[1] == "cd" {
                 match l[2] {
-                    "/"  => cur = &root,
-                    ".." => cur = &*cur.parent.unwrap(),
-                    x    => for a in &cur.sub {
-                        if a.name == x {
-                            cur = &a;
-                            break;
-                        }
-                    },
+                    "/"  => {let help = root.clone(); cur = help;}
+                    ".." => {let help = cur.borrow().parent.as_ref().unwrap()
+                                           .upgrade().unwrap().clone(); cur = help;}
+                    x    => {let help = cur.borrow().sub.iter().find(|n| n.borrow().name == x)
+                                           .unwrap().clone(); cur = help}
                 } 
+            } else {
+            }
+        } else {
+            if l[0] == "dir" {
+                cur.borrow_mut().sub.push(Rc::new(RefCell::new(
+                    Dir { name: l[1].clone(), dir: true, size: 0, parent: Some(Rc::downgrade(&cur)), sub: vec![]})));        
+            } else {
+                let size = l[0].parse().unwrap_or(0);
+                cur.borrow_mut().sub.push(Rc::new(RefCell::new(
+                    Dir { name: l[1].clone(), dir: false, size: size, parent: Some(Rc::downgrade(&cur)), sub: vec![]}))); 
             }
         }
-        println!("{:?}", l);
     }
-    Ok(())
+    let mut sizes: Vec<i64> = vec![];
+    let total = search_size(&root, &mut sizes);
+    println!("Part 1: {}", sizes.iter().filter(|x| **x < 100_000).sum::<i64>());
+    sizes.sort();
+    println!("Part 2: {}", sizes.iter().find(|x|70_000_000 - total + **x >= 30_000_000).unwrap());
 }
