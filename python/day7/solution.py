@@ -1,7 +1,4 @@
 class Dir:
-    """
-    Class Dir
-    """
     def __init__(self, name="", dir=True, size=None):
         self.name   = name
         self.dir    = dir
