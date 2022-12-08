@@ -45,11 +45,11 @@ fn main() {
         } else {
             if l[0] == "dir" {
                 cur.borrow_mut().sub.push(Rc::new(RefCell::new(
-                    Dir { name: l[1].clone(), dir: true, size: 0, parent: Some(Rc::downgrade(&cur)), sub: vec![]})));        
+                    Dir { name: l[1], dir: true, size: 0, parent: Some(Rc::downgrade(&cur)), sub: vec![]})));        
             } else {
                 let size = l[0].parse().unwrap_or(0);
                 cur.borrow_mut().sub.push(Rc::new(RefCell::new(
-                    Dir { name: l[1].clone(), dir: false, size: size, parent: Some(Rc::downgrade(&cur)), sub: vec![]}))); 
+                    Dir { name: l[1], dir: false, size: size, parent: Some(Rc::downgrade(&cur)), sub: vec![]}))); 
             }
         }
     }
