@@ -7,7 +7,6 @@ visit2 = set()
 
 def move_head(d, c):
     global h, t, visit, D
-    D = {"R": [1, 0], "L": [-1, 0], "U": [0, 1], "D": [0, -1]}
     vec = D[d]
     for i in range(int(c)):
         h[0] += vec[0] 
