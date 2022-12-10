@@ -6,7 +6,7 @@ rows = ""
 def update_inc():
     global x, cycle, signal, rows
     cycle += 1
-    if cycle == 20 or (cycle - 20) % 40 == 0:
+    if (cycle - 20) % 40 == 0:
         signal += cycle * x  
     pos = (cycle - 1) % 40
     rows += '#' if pos >= x - 1 and pos <= x + 1 else '.'
