@@ -14,3 +14,8 @@ rust/day7/target
 rust/day7/Cargo.lock
 rust/day8/target
 rust/day8/Cargo.lock
+rust/day9/target
+rust/day9/Cargo.lock
+rust/day10/target
+rust/day10/Cargo.lock
+.DS_Store
