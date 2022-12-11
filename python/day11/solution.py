@@ -28,9 +28,8 @@ for r in range(20):
                 i = i + v
             elif m.op[0] == '*':
                 i = i * v
-            i = i // 3
             to = m.true if (i % m.test) == 0 else m.false
-            monkey[to].item.append(i)
+            monkey[to].item.append(i // 3)
             
 part1 = [m.insp for m in monkey]
 part1.sort(reverse=True)
