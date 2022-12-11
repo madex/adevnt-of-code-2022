@@ -22,9 +22,8 @@ for r in range(20):
             i = m.op(m.item.pop(0))
             monkey[m.true if (i % m.test) == 0 else m.false].item.append(i // 3)
             
-part1 = [m.insp for m in monkey]
-part1.sort(reverse=True)
-print("Part 1:", part1[0] * part1[1]) # 10605
+part1 = sorted([m.insp for m in monkey])
+print("Part 1:", part1[-1] * part1[-2]) # 10605
 monkey = [Monkey(x) for x in inp.split('\n\n')]
 common_divisor = math.prod([m.test for m in monkey])
 for r in range(10_000):
@@ -34,6 +33,5 @@ for r in range(10_000):
             i = m.op(m.item.pop(0))
             monkey[m.true if (i % m.test) == 0 else m.false].item.append(i % common_divisor)
 
-part2 = [m.insp for m in monkey]
-part2.sort(reverse=True)
-print("Part 2:", part2[0] * part2[1]) # 2713310158
+part2 = sorted([m.insp for m in monkey])
+print("Part 2:", part2[-1] * part2[-2]) # 2713310158
