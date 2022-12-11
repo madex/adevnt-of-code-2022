@@ -35,32 +35,12 @@ impl Monkey {
             insp:     0,
             mul:      ope[0] == "*",
             op:       if ope[1] == "old" {None} else {Some(ope[1].parse().unwrap())},
-            test:     l.iter()
-                .map(|x| x.strip_prefix("  Test: divisible by "))
-                .filter(|y| y.is_some())
-                .nth(0)
-                .unwrap()
-                .unwrap()
-                .parse()
-                .unwrap(),
+            test:
+                l[3].split(' ').last().unwrap().parse().unwrap(),
             if_true:
-                l.iter()
-                    .map(|x| x.strip_prefix("    If true: throw to monkey "))
-                    .filter(|y| y.is_some())
-                    .nth(0)
-                    .unwrap()
-                    .unwrap()
-                    .parse()
-                    .unwrap(),
+                l[4].split(' ').last().unwrap().parse().unwrap(),
             if_false:
-                l.iter()
-                    .map(|x| x.strip_prefix("    If false: throw to monkey "))
-                    .filter(|y| y.is_some())
-                    .nth(0)
-                    .unwrap()
-                    .unwrap()
-                    .parse()
-                    .unwrap(),
+                l[5].split(' ').last().unwrap().parse().unwrap()
         }
     }
 }
