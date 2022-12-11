@@ -19,10 +19,8 @@ for r in range(20):
     for m in monkey:
         while len(m.item) > 0:
             m.insp += 1
-            i = m.item.pop(0)
-            i = m.op(i)
-            to = m.true if (i % m.test) == 0 else m.false
-            monkey[to].item.append(i // 3)
+            i = m.op(m.item.pop(0))
+            monkey[m.true if (i % m.test) == 0 else m.false].item.append(i // 3)
             
 part1 = [m.insp for m in monkey]
 part1.sort(reverse=True)
@@ -33,10 +31,8 @@ for r in range(10_000):
     for m in monkey:
         while len(m.item) > 0:
             m.insp += 1
-            i = m.item.pop(0)
-            i = m.op(i)
-            to = m.true if (i % m.test) == 0 else m.false
-            monkey[to].item.append(i % common_divisor)
+            i = m.op(m.item.pop(0))
+            monkey[m.true if (i % m.test) == 0 else m.false].item.append(i % common_divisor)
 
 part2 = [m.insp for m in monkey]
 part2.sort(reverse=True)
