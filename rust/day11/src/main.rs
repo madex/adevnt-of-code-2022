@@ -65,6 +65,19 @@ impl Monkey {
     }
 }
 
+fn monk_round(m: &mut Vec<Monkey>, part1: bool, cd: i64) {
+    for i in 0..m.len() {
+        while m[i].item.len() > 0 {
+            m[i].insp += 1;
+            let it = m[i].item.remove(0);
+            let v = if m[i].op.is_some() {m[i].op.unwrap()} else {it};
+            let r = if m[i].mul { it * v } else { it + v };
+            let n = if (r % m[i].test) == 0 {m[i].if_true} else {m[i].if_false};
+            m[n].item.push(if part1 {r / 3} else {r % cd});
+        }
+    }
+}
+
 fn main() {
     //let mut state = State { x: 1, cycle:0, signal: 0 };
     let contents = fs::read_to_string("input.txt").expect("puzzle input");
@@ -75,16 +88,7 @@ fn main() {
         .collect();
     let common_divisor: i64 = monkey.iter().map(|x| x.test).product();
     for _ in 0..20 {
-        for i in 0..monkey.len() {
-            while monkey[i].item.len() > 0 {
-                monkey[i].insp += 1;
-                let it = monkey[i].item.remove(0);
-                let v = if monkey[i].op.is_some() {monkey[i].op.unwrap()} else {it};
-                let r = if monkey[i].mul { it * v } else { it + v } / 3;
-                let n = if (r % monkey[i].test) == 0 {monkey[i].if_true} else {monkey[i].if_false};
-                monkey[n].item.push(r);
-            }
-        }
+        monk_round(&mut monkey, true, common_divisor);
     }
     let mut insp: Vec<i64> = monkey.iter().map(|x| x.insp).collect();
     insp.sort_by(|a, b| b.cmp(a));
@@ -95,16 +99,7 @@ fn main() {
         .map(|x| Monkey::init(x))
         .collect();
     for _ in 0..10_000 {
-        for i in 0..monkey.len() {
-            while monkey[i].item.len() > 0 {
-                monkey[i].insp += 1;
-                let it = monkey[i].item.remove(0);
-                let v = if monkey[i].op.is_some() {monkey[i].op.unwrap()} else {it};
-                let r = if monkey[i].mul { it * v } else { it + v };
-                let n = if (r % monkey[i].test) == 0 {monkey[i].if_true} else {monkey[i].if_false};
-                monkey[n].item.push(r % common_divisor);
-            }
-        }
+        monk_round(&mut monkey, false, common_divisor);
     }
     insp = monkey.iter().map(|x| x.insp).collect();
     insp.sort_by(|a, b| b.cmp(a));
