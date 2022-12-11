@@ -86,9 +86,9 @@ fn main() {
             }
         }
     }
-    let mut part1: Vec<i64> = monkey.iter().map(|x| x.insp).collect();
-    part1.sort_by(|a, b| b.cmp(a));
-    println!("Part 1: {}", part1.iter().take(2).product::<i64>()); // 10605
+    let mut insp: Vec<i64> = monkey.iter().map(|x| x.insp).collect();
+    insp.sort_by(|a, b| b.cmp(a));
+    println!("Part 1: {}", insp[0]*insp[1]); // 10605
     monkey = contents
         .trim()
         .split("\n\n")
@@ -106,7 +106,7 @@ fn main() {
             }
         }
     }
-    let mut part2: Vec<i64> = monkey.iter().map(|x| x.insp).collect();
-    part2.sort_by(|a, b| b.cmp(a));
-    println!("Part 2: {}", part2.iter().take(2).product::<i64>()); // 2713310158
+    insp = monkey.iter().map(|x| x.insp).collect();
+    insp.sort_by(|a, b| b.cmp(a));
+    println!("Part 2: {}", insp[0]*insp[1]); // 2713310158
 }
