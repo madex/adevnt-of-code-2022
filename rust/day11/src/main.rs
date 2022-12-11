@@ -89,24 +89,24 @@ fn main() {
     let mut part1: Vec<i64> = monkey.iter().map(|x| x.insp).collect();
     part1.sort_by(|a, b| b.cmp(a));
     println!("Part 1: {}", part1.iter().take(2).product::<i64>()); // 10605
-    let mut monkey2: Vec<Monkey> = contents
+    monkey = contents
         .trim()
         .split("\n\n")
         .map(|x| Monkey::init(x))
         .collect();
     for _ in 0..10_000 {
-        for i in 0..monkey2.len() {
-            while monkey2[i].item.len() > 0 {
-                monkey2[i].insp += 1;
-                let it = monkey2[i].item.remove(0);
-                let v = if monkey2[i].op.is_some() {monkey2[i].op.unwrap()} else {it};
-                let r = if monkey2[i].mul { it * v } else { it + v };
-                let n = if (r % monkey2[i].test) == 0 {monkey2[i].if_true} else {monkey2[i].if_false};
-                monkey2[n].item.push(r % common_divisor);
+        for i in 0..monkey.len() {
+            while monkey[i].item.len() > 0 {
+                monkey[i].insp += 1;
+                let it = monkey[i].item.remove(0);
+                let v = if monkey[i].op.is_some() {monkey[i].op.unwrap()} else {it};
+                let r = if monkey[i].mul { it * v } else { it + v };
+                let n = if (r % monkey[i].test) == 0 {monkey[i].if_true} else {monkey[i].if_false};
+                monkey[n].item.push(r % common_divisor);
             }
         }
     }
-    let mut part2: Vec<i64> = monkey2.iter().map(|x| x.insp).collect();
+    let mut part2: Vec<i64> = monkey.iter().map(|x| x.insp).collect();
     part2.sort_by(|a, b| b.cmp(a));
     println!("Part 2: {}", part2.iter().take(2).product::<i64>()); // 2713310158
 }
