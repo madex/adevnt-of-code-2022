@@ -1,19 +1,15 @@
 import math
 class Monkey:
     def __init__(self, str):
-        for l in str.split('\n'):
-            li = l.split(':')
-            if li[0] == '  Starting items':
-                self.item = [int(x.strip()) for x in li[1].split(',')]
-            elif li[0] == '  Operation':
-                self.op = li[1][len(" new = old "):].split(' ')
-            elif li[0] == '  Test':
-                self.test = int(li[1][len(" divisible by "):])
-            elif li[0] == '    If true':
-                self.true = int(li[1][len(" throw to monkey "):])
-            elif li[0] == '    If false':
-                self.false = int(li[1][len(" throw to monkey "):])
-        self.insp = 0
+        _, items, op, test, true, false = str.strip().split('\n')
+        self.item  = [int(i) for i in items.split(':')[1].split(',')]
+        words      = op.split()
+        op         = ''.join(words[-3:])
+        self.op    = lambda old,op=op:eval(op)
+        self.test  = int(test.split()[-1])
+        self.true  = int(true.split()[-1])
+        self.false = int(false.split()[-1])
+        self.insp  = 0
 
 f = open('input.txt')
 inp = f.read()
@@ -24,11 +20,7 @@ for r in range(20):
         while len(m.item) > 0:
             m.insp += 1
             i = m.item.pop(0)
-            v = i if m.op[1] == 'old' else int(m.op[1])
-            if m.op[0] == '+':
-                i = i + v
-            elif m.op[0] == '*':
-                i = i * v
+            i = m.op(i)
             to = m.true if (i % m.test) == 0 else m.false
             monkey[to].item.append(i // 3)
             
@@ -42,11 +34,7 @@ for r in range(10_000):
         while len(m.item) > 0:
             m.insp += 1
             i = m.item.pop(0)
-            v = i if m.op[1] == 'old' else int(m.op[1])
-            if m.op[0] == '+':
-                i = i + v
-            elif m.op[0] == '*':
-                i = i * v
+            i = m.op(i)
             to = m.true if (i % m.test) == 0 else m.false
             monkey[to].item.append(i % common_divisor)
 
