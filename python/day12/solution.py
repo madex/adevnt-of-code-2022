@@ -3,7 +3,6 @@ ways = []
 f = open('input.txt')
 m = [[c for c in x] for x in f.read().strip().split('\n')]
 f.close()
-#print(m)
 
 def get(p):
     global m
