@@ -4,13 +4,9 @@ def check(y, part1):
         d = abs(e[0] - e[2]) + abs(e[1] - e[3])
         a = abs(e[1] - y)
         if a <= d:
-            d0 = e[0] - d + a
-            d1 = e[0] + d - a
-            blocked.append([d0, d1]) 
+            blocked.append([e[0] - d + a, e[0] + d - a]) 
     blocked.sort()
     b = blocked.pop(0)
-    if b[0] > 0:
-        return 0
     for x in blocked:
         if b[0] <= x[0] <= b[1]:
             if x[1] > b[1]:
@@ -19,8 +15,6 @@ def check(y, part1):
             return x[0] - 1
     if part1:
         return b[1] - b[0] + 1 
-    elif  b[1] < cMax:
-        return cMax
     return -1
 
 import re
